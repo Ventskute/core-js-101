@@ -175,8 +175,17 @@ function isInsideCircle(circle, point) {
  *   'abracadabra'  => 'c'
  *   'entente' => null
  */
-function findFirstSingleChar(/* str */) {
-  throw new Error('Not implemented');
+function findFirstSingleChar(str) {
+  const array = str.split('');
+  let res = null;
+  for (let i = 0; i < array.length; i += 1) {
+    const filt = array.filter((el) => el === array[i]);
+    if (filt.length === 1) {
+      res = array[i];
+      break;
+    }
+  }
+  return res;
 }
 
 
@@ -275,8 +284,19 @@ function reverseInteger(num) {
  *   5436468789016589 => false
  *   4916123456789012 => false
  */
-function isCreditCardNumber(/* ccn */) {
-  throw new Error('Not implemented');
+function isCreditCardNumber(ccn) {
+  const sum = String(ccn).split('').reverse()
+    .map((num, ind) => ((ind % 2 !== 0) ? num * 2 : num))
+    .map((num) => {
+      const str = String(num);
+      return num > 9
+        ? Number(str[0]) + Number(str[1])
+        : Number(num);
+    })
+    .reverse()
+    .reduce((acc, v) => acc + v, 0);
+
+  return sum % 10 === 0;
 }
 
 /**
@@ -293,8 +313,14 @@ function isCreditCardNumber(/* ccn */) {
  *   10000 ( 1+0+0+0+0 = 1 ) => 1
  *   165536 (1+6+5+5+3+6 = 26,  2+6 = 8) => 8
  */
-function getDigitalRoot(/* num */) {
-  throw new Error('Not implemented');
+function getDigitalRoot(num) {
+  let sum = String(num).split('').reduce((acc, v) => acc + Number(v), 0);
+
+  while (sum > 9) {
+    sum = getDigitalRoot(sum);
+  }
+
+  return sum;
 }
 
 
@@ -319,8 +345,24 @@ function getDigitalRoot(/* num */) {
  *   '{)' = false
  *   '{[(<{[]}>)]}' = true
  */
-function isBracketsBalanced(/* str */) {
-  throw new Error('Not implemented');
+function isBracketsBalanced(str) {
+  const config = {
+    '[': ']',
+    '{': '}',
+    '(': ')',
+    '<': '>',
+  };
+  let string = str;
+  for (let i = 0; i < str.length; i += 1) {
+    for (let j = 0; j < string.length; j += 1) {
+      const brackets = string[j] + config[string[j]];
+
+      while (string.includes(brackets)) {
+        string = string.replace(brackets, '');
+      }
+    }
+  }
+  return string.length === 0;
 }
 
 
@@ -344,8 +386,8 @@ function isBracketsBalanced(/* str */) {
  *    365, 4  => '11231'
  *    365, 10 => '365'
  */
-function toNaryString(/* num, n */) {
-  throw new Error('Not implemented');
+function toNaryString(num, n) {
+  return num.toString(n);
 }
 
 
@@ -361,8 +403,15 @@ function toNaryString(/* num, n */) {
  *   ['/web/assets/style.css', '/.bin/mocha',  '/read.me'] => '/'
  *   ['/web/favicon.ico', '/web-scripts/dump', '/webalizer/logs'] => '/'
  */
-function getCommonDirectoryPath(/* pathes */) {
-  throw new Error('Not implemented');
+function getCommonDirectoryPath(pathes) {
+  const arr = pathes.map((el) => el.split('/'));
+  const res = [];
+  arr[0].forEach((el, i) => {
+    if (arr.every((item) => item[i] === el)) {
+      res.push(el);
+    }
+  });
+  return `${res.join('/')}${(res.length > 0 ? '/' : '')}`;
 }
 
 
