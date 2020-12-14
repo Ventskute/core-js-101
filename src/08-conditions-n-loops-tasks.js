@@ -433,8 +433,24 @@ function getCommonDirectoryPath(pathes) {
  *                         [ 6 ]]
  *
  */
-function getMatrixProduct(/* m1, m2 */) {
-  throw new Error('Not implemented');
+function getMatrixProduct(m1, m2) {
+  const rowsA = m1.length;
+  const colsA = m1[0].length;
+  const rowsB = m2.length;
+  const colsB = m2[0].length;
+  const C = [];
+  if (colsA !== rowsB) return false;
+  for (let i = 0; i < rowsA; i += 1) C[i] = [];
+  for (let k = 0; k < colsB; k += 1) {
+    for (let i = 0; i < rowsA; i += 1) {
+      let t = 0;
+      for (let j = 0; j < rowsB; j += 1) {
+        t += m1[i][j] * m2[j][k];
+      }
+      C[i][k] = t;
+    }
+  }
+  return C;
 }
 
 
@@ -468,8 +484,28 @@ function getMatrixProduct(/* m1, m2 */) {
  *    [    ,   ,    ]]
  *
  */
-function evaluateTicTacToePosition(/* position */) {
-  throw new Error('Not implemented');
+function evaluateTicTacToePosition(position) {
+  let res;
+
+  const XXX = 'XXX';
+  const nul = '000';
+
+  const diag1 = `${position[0][0]}${position[1][1]}${position[2][2]}`;
+  const diag2 = `${position[0][2]}${position[1][1]}${position[2][0]}`;
+  if (diag1 === XXX || diag2 === XXX || position.some((row) => row.join('') === XXX)) {
+    res = 'X';
+  } else if (diag1 === nul || diag2 === nul || position.some((row) => row.join('') === nul)) {
+    res = '0';
+  } else {
+    for (let i = 0; i < 3; i += 1) {
+      if (`${position[0][i]}${position[1][i]}${position[2][i]}` === XXX) {
+        res = 'X';
+      } else if (`${position[0][i]}${position[1][i]}${position[2][i]}` === nul) {
+        res = '0';
+      }
+    }
+  }
+  return res;
 }
 
 
